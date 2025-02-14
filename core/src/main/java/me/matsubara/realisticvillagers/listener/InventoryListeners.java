@@ -22,6 +22,7 @@ import me.matsubara.realisticvillagers.task.PreviewTask;
 import me.matsubara.realisticvillagers.tracker.VillagerTracker;
 import me.matsubara.realisticvillagers.util.ItemBuilder;
 import me.matsubara.realisticvillagers.util.PluginUtils;
+import me.matsubara.realisticvillagers.compatibility.*;
 import net.wesjd.anvilgui.AnvilGUI;
 import org.apache.commons.lang3.tuple.Pair;
 import org.bukkit.*;
@@ -460,12 +461,14 @@ public final class InventoryListeners implements Listener {
 
             npc.setProcreatingWith(playerUUID);
             new BabyTask(plugin, villager, player).runTaskTimer(plugin, 0L, 20L);
-        } else if (isCustomItem(current, "divorce")) {
+        } else if (isCustomItem(current, "divorce") || plugin.getCompatibilityManager().isMarried(player)) {
             // Return if it's a kid.
             if (conditionNotMet(player, villager.isAdult(), Messages.Message.INTERACT_FAIL_NOT_AN_ADULT)) return;
 
             // Return if not married.
-            if (conditionNotMet(player, isPartner, Messages.Message.INTERACT_FAIL_NOT_MARRIED)) return;
+            if (conditionNotMet(player, isPartner, Messages.Message.INTERACT_FAIL_NOT_MARRIED) || conditionNotMet(player, plugin.getCompatibilityManager().isMarried(player), Messages.Message.INTERACT_FAIL_NOT_MARRIED)) return;
+
+            
 
             // Only remove divorce papers if the villager isn't a cleric partner.
             boolean hasDivorcePapers = (isPartner && villager.getProfession() == Villager.Profession.CLERIC)
@@ -485,6 +488,10 @@ public final class InventoryListeners implements Listener {
             } else {
                 messages.send(player, npc, Messages.Message.DIVORCE_NORMAL);
             }
+
+
+            
+
 
             // Divorce, remove and drop previous wedding ring.
             npc.divorceAndDropRing(player);

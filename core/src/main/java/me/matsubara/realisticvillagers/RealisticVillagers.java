@@ -164,6 +164,7 @@ public final class RealisticVillagers extends JavaPlugin {
         addCompatibility("EliteMobs", EMCompatibility::new);
         addCompatibility("ViaVersion", ViaCompatibility::new);
         addCompatibility("VillagerTradeLimiter", VTLCompatibility::new);
+        addCompatibility("MarriageMaster", MarriageCompatibility::new);
 
         logger.info("Compatibilities loaded!");
         logger.info("");
@@ -797,7 +798,7 @@ public final class RealisticVillagers extends JavaPlugin {
     public boolean isMarried(@NotNull Player player) {
         String partner = player.getPersistentDataContainer().get(marriedWith, PersistentDataType.STRING);
         if (partner == null) return false;
-
+        if (!compatibilityManager.isMarried(player)) return false;
         IVillagerNPC partnerInfo = tracker.getOffline(UUID.fromString(partner));
         if (partnerInfo == null) {
             player.getPersistentDataContainer().remove(marriedWith);

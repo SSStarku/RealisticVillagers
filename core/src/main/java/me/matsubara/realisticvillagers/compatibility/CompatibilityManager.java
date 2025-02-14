@@ -1,5 +1,10 @@
 package me.matsubara.realisticvillagers.compatibility;
 
+import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriageMaster;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriageManager;
+import at.pcgamingfreaks.MarriageMaster.API.MarriagePlayer;
+
+import at.pcgamingfreaks.MarriageMaster.API.MarriagePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Villager;
 import org.bukkit.plugin.Plugin;
@@ -29,4 +34,21 @@ public class CompatibilityManager {
     public boolean shouldCancelMetadata(Player player) {
         return compatibilities.get("ViaVersion") instanceof ViaCompatibility via && via.cancelMetadata(player);
     }
+
+
+
+    public boolean isMarried(Player player) {
+        if (compatibilities.get("MarriageMaster") instanceof MarriageMaster marriageMaster) {
+            MarriageManager manager = marriageMaster.getMarriageManager();
+            MarriagePlayer<?, ?> marriagePlayer = manager.getMarriagePlayer(player.getUniqueId());
+
+            return marriagePlayer != null && marriagePlayer.isMarried();
+        }
+        return false;
+    }
+
+    public boolean isDivorced(Player player) {
+        return !isMarried(player);
+    }
+
 }

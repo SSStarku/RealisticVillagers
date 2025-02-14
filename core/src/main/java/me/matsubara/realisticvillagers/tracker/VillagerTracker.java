@@ -334,8 +334,7 @@ public final class VillagerTracker implements Listener {
     }
 
     public boolean isInvalid(@NotNull LivingEntity living, boolean ignoreSkinState) {
-        return (!ignoreSkinState && Config.DISABLE_SKINS.asBool())
-                || (!(living instanceof WanderingTrader) && (!(living instanceof Villager villager) || !plugin.getCompatibilityManager().shouldTrack(villager)))
+        return (!(living instanceof WanderingTrader) && (!(living instanceof Villager villager) || !plugin.getCompatibilityManager().shouldTrack(villager)))
                 || plugin.isDisabledIn(living.getWorld())
                 || plugin.getConverter().getNPC(living).isEmpty();
     }
