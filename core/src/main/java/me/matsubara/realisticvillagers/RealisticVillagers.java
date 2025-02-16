@@ -164,6 +164,7 @@ public final class RealisticVillagers extends JavaPlugin {
         addCompatibility("EliteMobs", EMCompatibility::new);
         addCompatibility("ViaVersion", ViaCompatibility::new);
         addCompatibility("VillagerTradeLimiter", VTLCompatibility::new);
+        addCompatibility("MarriageMaster", MarriageCompatibility::new);
 
         logger.info("Compatibilities loaded!");
         logger.info("");
